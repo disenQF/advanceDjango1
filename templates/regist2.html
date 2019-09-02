@@ -15,7 +15,12 @@
         <br>
         爱好：
         {% for love in loves %}
-            <input type="checkbox" name="love" value="{{ love }}"> {{ love }}
+            {# 默认选择第一项和最后一项的爱好 #}
+            <input type="checkbox"
+                   {% if forloop.first or forloop.last %}
+                        checked
+                   {% endif %}
+                   name="love" value="{{ love }}"> {{ love }}
         {% endfor %}
         <br>
         <button>提交</button>

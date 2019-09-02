@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Regist3</title>
+</head>
+<body>
+<p>
+<form method="post" enctype="application/x-www-form-urlencoded">
+    <input name="name" placeholder="username">
+    <br>
+    <input name="phone" placeholder="phone">
+    <br>
+    <button>提交</button>
+</form>
+</p>
+
+<p>
+    <button onclick="up_ajax()">ajax发起put请求</button>
+    <script>
+        function up_ajax() {
+            data = {
+                name: '李成',
+                phone: '1991828272',
+                loves: ['唱', '跳', 'RAP', '篮球']
+            };
+            fetch('', {
+                method: 'PUT',
+                body: document.forms[0].serialize,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }).then(response => response.text())
+                .then(html => {
+                    document.write(html)
+                })
+        }
+    </script>
+</p>
+<p>
+    POST请求参数：
+<ul>
+    {% for key, value in request.POST.items %}
+        <li>{{ key }}: {{ value }}</li>
+    {% endfor %}
+</ul>
+</p>
+<p>
+    PUT的参数（body）： {{ request.body }}
+    <br>
+    Content-Type:  {{ request.content_type }};{{ request.encoding }}
+
+</p>
+
+</body>
+</html>
