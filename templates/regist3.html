@@ -22,15 +22,21 @@
     <script>
         function up_ajax() {
             data = {
-                name: '李成',
-                phone: '1991828272',
-                loves: ['唱', '跳', 'RAP', '篮球']
+                 name: document.forms[0].name.value,
+                 phone: document.forms[0].phone.value
             };
+            let formdata = new FormData();
+            formdata.append('name', data.name);
+            formdata.append('phone', data.phone);
+
+            // ??? es6-form序列化：  key=value&key=value  格式的字符串
+
             fetch('', {
                 method: 'PUT',
-                body: document.forms[0].serialize,
+               //  body: 'name='+data.name+"&phone="+data.phone,
+                body: JSON.stringify(data),
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/json;charset=utf-8'
                 }
             }).then(response => response.text())
                 .then(html => {
