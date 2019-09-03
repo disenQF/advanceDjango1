@@ -17,6 +17,8 @@ from PIL import Image, ImageDraw, ImageFont
 from common import code
 from common.code import new_code_str
 from user.models import Order
+from django.core.cache import cache
+
 
 @csrf_exempt
 def regist_2(request, user_id=None):
@@ -134,13 +136,16 @@ def login(request):
     phone = request.GET.get('phone')
     code = request.GET.get('code')
 
-    if all((
-        phone == request.session.get('phone'),
-        code == request.session.get('code')
-    )):
+    # 判断缓存中是否存在phone
+    # 存在则读取
+    if all((cache.has_key(phone),
+            cache.get(phone) == code)):
         resp = HttpResponse('登录成功')
         token = uuid.uuid4().hex  # 保存到缓存
         resp.set_cookie('token', token)
+
+        # 删除缓存
+        cache.delete(phone)
 
         return resp
 
@@ -167,10 +172,15 @@ def new_code(request):
     code_txt = code.new_code_str(4)
     print(code_txt)
 
-    phone = request.GET.get('phone')
+    phone = request.GET.get('phone', '')
+    print(phone)
     # 保存到session中
     request.session['code'] = code_txt
     request.session['phone'] = phone
+
+    # 将验证码存到cache
+    # timeout是缓存的时间
+    cache.set(phone, code_txt, timeout=60)
 
     # 向手机发送验证码:  华为云、阿里云：短信服务
 

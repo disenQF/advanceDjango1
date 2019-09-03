@@ -158,3 +158,17 @@ LOGGING = {
         }
     }
 }
+
+
+# 配置缓存Cache
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': f'{BASE_DIR}/mycache',
+        'TIMEOUT': 300,
+        'OPTIONS': {
+            'MAX_ENTRIES': 500,
+            'CULL_FREQUENCY': 3
+        }
+    }
+}

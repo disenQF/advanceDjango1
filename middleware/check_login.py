@@ -33,7 +33,7 @@ class CheckLoginMiddleware(MiddlewareMixin):
 
         print(callback, callback_args, callback_kwargs)
 
-    def process_exception(self, request, exception):
+    def process_exception1(self, request, exception):
         # print('---CheckLoginMiddleware--', 'process_exception')
         # print(exception, type(exception))  # Exception
         if isinstance(exception, ContextError):
