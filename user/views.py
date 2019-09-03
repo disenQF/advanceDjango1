@@ -14,6 +14,7 @@ import json
 
 from PIL import Image, ImageDraw, ImageFont
 
+from common import code
 from common.code import new_code_str
 from user.models import Order
 
@@ -157,15 +158,14 @@ def logout(request):
 
 def list(request):
     # 验证是否登录
-    if request.COOKIES.get('token'):
-        return HttpResponse('正在跳转到主页')
     return  HttpResponse('请先登录')
 
 
 def new_code(request):
     # 生成手机验证码
     # 随机产生验证码 : 大小写字母+数字
-    code_txt = 'Xab9'
+    code_txt = code.new_code_str(4)
+    print(code_txt)
 
     phone = request.GET.get('phone')
     # 保存到session中

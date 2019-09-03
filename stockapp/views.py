@@ -14,6 +14,7 @@ class StockView(View):
 
     def get(self, request, **kwargs):
         stock_id = kwargs.get('stock_id')
+        page = kwargs.get('page', 5)
         return render(request, 'stock/list.html', locals())
 
     def post(self, request):
