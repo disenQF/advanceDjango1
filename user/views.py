@@ -17,7 +17,6 @@ from PIL import Image, ImageDraw, ImageFont
 from common.code import new_code_str
 from user.models import Order
 
-
 @csrf_exempt
 def regist_2(request, user_id=None):
     loves = ['H5', 'Java', 'Python', 'Linux', 'Oracle', 'Cookie']
