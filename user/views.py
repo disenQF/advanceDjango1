@@ -1,4 +1,5 @@
 import os
+import random
 import uuid
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -9,6 +10,9 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+from PIL import Image, ImageDraw, ImageFont
+
+from common.code import new_code_str
 
 @csrf_exempt
 def regist_2(request, user_id=None):
@@ -122,8 +126,6 @@ def del_cookie(request):
     return resp
 
 
-
-
 def login(request):
     phone = request.GET.get('phone')
     code = request.GET.get('code')
@@ -170,3 +172,42 @@ def new_code(request):
     # 向手机发送验证码:  华为云、阿里云：短信服务
 
     return HttpResponse('已向 %s 手机发送了验证码！' % phone)
+
+
+
+def new_img_code(request):
+
+    # 创建画布
+    img = Image.new('RGB', (120, 40), (100, 100, 0))
+
+    # 从画布中获取画笔
+    draw = ImageDraw.Draw(img, 'RGB')
+
+    # 创建字体对象和字体颜色
+    font_color = (0, 20, 100)
+    font = ImageFont.truetype(font='static/fonts/buding.ttf',
+                              size=30)
+
+    valid_code = new_code_str(6)
+    request.session['code'] = valid_code
+
+    # 开始画内容
+    draw.text((5, 5), valid_code, font=font, fill=font_color)
+
+    for _ in range(500):
+        x = random.randint(0, 120)
+        y = random.randint(0, 40)
+
+        r = random.randint(0, 255)
+        g = random.randint(0, 255)
+        b = random.randint(0, 255)
+
+        draw.point((x, y), (r, g, b))
+
+    # 将画布写入内存字节数组中
+    from io import BytesIO
+    buffer = BytesIO()
+    img.save(buffer, 'png')  # 写入
+
+    return HttpResponse(content=buffer.getvalue(),
+                        content_type='image/png')
