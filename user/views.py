@@ -3,6 +3,8 @@ import random
 import uuid
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
@@ -215,5 +217,13 @@ def new_img_code(request):
                         content_type='image/png')
 
 def order_list(request):
-    orders = Order.objects.all()
+    wd = request.GET.get('wd', '')
+    page = request.GET.get('page', 1)
+
+    orders = Order.objects.filter(Q(title__icontains=wd)).all()
+
+    # 分页器Paginator
+    paginator = Paginator(orders, 5)
+    pager = paginator.page(page)  # 查询第page页
+
     return render(request, 'list.html', locals())
