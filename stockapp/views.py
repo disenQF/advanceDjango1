@@ -27,6 +27,13 @@ class StockView(View):
         return HttpResponse('Delete请求')
 
 
+class ContextError(Exception):
+    pass
+
+class LoginError(Exception):
+    pass
+
+
 class GoodsView(TemplateView):
     # 针对get请求
 
@@ -35,6 +42,9 @@ class GoodsView(TemplateView):
     extra_context = {'msg': '我是扩展的消息'}
 
     def get_context_data(self, **kwargs):
+        # raise ContextError('抛出异常')
+
+
         # 渲染模板之前，提供上下文数据
         context = super(GoodsView, self).get_context_data(**kwargs)
         wd = context.get('wd', '')
@@ -52,5 +62,5 @@ class QueryView(RedirectView):
     query_string = True  # 确定是否拼接查询参数
 
     def get_redirect_url(self, *args, **kwargs):
-
+        # raise LoginError('查询异常')
         return super(QueryView, self).get_redirect_url(*args, **kwargs)
