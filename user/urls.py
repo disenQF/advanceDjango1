@@ -15,5 +15,6 @@ urlpatterns = [
     path('code/', views.new_code),
     path('imgcode/', views.new_img_code),
     path('logout/', views.logout),
-    path('list/', views.list)
+    path('list/', views.list),
+    path('order_list/', views.order_list),
 ]

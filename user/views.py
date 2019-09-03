@@ -13,6 +13,8 @@ import json
 from PIL import Image, ImageDraw, ImageFont
 
 from common.code import new_code_str
+from user.models import Order
+
 
 @csrf_exempt
 def regist_2(request, user_id=None):
@@ -211,3 +213,7 @@ def new_img_code(request):
 
     return HttpResponse(content=buffer.getvalue(),
                         content_type='image/png')
+
+def order_list(request):
+    orders = Order.objects.all()
+    return render(request, 'list.html', locals())
