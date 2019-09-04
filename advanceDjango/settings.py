@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'user',
     'stockapp',
     'django_celery_results',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -110,9 +111,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -161,7 +162,6 @@ LOGGING = {
     }
 }
 
-
 # 配置缓存Cache
 CACHES = {
     'file': {
@@ -189,15 +189,25 @@ CACHES = {
 
 }
 
-
 # 配置SESSION
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_COOKIE_NAME = 'SESSION_ID'
 SESSION_COOKIE_PATH = '/'
 SESSION_CACHE_ALIAS = 'default'
-SESSION_COOKIE_AGE = 1209600   # 2周有效时间
-
+SESSION_COOKIE_AGE = 1209600  # 2周有效时间
 
 # 配置Celery
-CELERY_IMPORTS = ('stockapp.tasks', )
+CELERY_IMPORTS = ('stockapp.tasks',)
 CELERY_RESULT_BACKEND = 'django-db'
+CELERY_TIMEZONE = TIME_ZONE
+
+# 配置计划任务调度类
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
+
+CELERY_BEAT_SCHEDULE = {
+    u'定时同步数据2': {
+        'task': 'stockapp.tasks.con_data',
+        'schedule': 1,
+        'args': ('同步oracle', )
+    }
+}
