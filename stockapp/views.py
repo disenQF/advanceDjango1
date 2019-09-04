@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import TemplateView, RedirectView
 
+from .tasks import qbuy
 
 class StockView(View):
     def dispatch(self, request, *args, **kwargs):
@@ -64,3 +65,8 @@ class QueryView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         # raise LoginError('查询异常')
         return super(QueryView, self).get_redirect_url(*args, **kwargs)
+
+
+def qbuy_v(request, goods_id):
+    qbuy.delay(goods_id, '123')
+    return HttpResponse('抢购成功')

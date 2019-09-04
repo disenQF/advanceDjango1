@@ -11,5 +11,6 @@ urlpatterns = [
          csrf_exempt(views.StockView.as_view()),
          name='stocks'),
     path('goods/<wd>/', views.GoodsView.as_view(), name='goods'),
-    path('query/<wd>/', views.QueryView.as_view(), name='query')
+    path('query/<wd>/', views.QueryView.as_view(), name='query'),
+    path('qbuy/<goods_id>/', views.qbuy_v)
 ]
