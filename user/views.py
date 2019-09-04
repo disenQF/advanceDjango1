@@ -16,6 +16,7 @@ import json
 
 from PIL import Image, ImageDraw, ImageFont
 
+import signals
 from common import code
 from common.code import new_code_str
 from user.models import Order
@@ -178,6 +179,15 @@ def new_code(request):
 
     phone = request.GET.get('phone', '')
     print(phone)
+
+    # 发送信号
+    #  sender 名字可以根据需求设定
+    #  关键参数列表，根据信号定义的参数列表传值
+    signals.codeSignal.send('new_code',
+                            path=request.path,
+                            phone=phone,
+                            code=code_txt)
+
     # 保存到session中
     request.session['code'] = code_txt
     request.session['phone'] = phone
