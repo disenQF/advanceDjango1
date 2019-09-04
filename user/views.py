@@ -1,5 +1,6 @@
 import os
 import random
+import string
 import uuid
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -9,6 +10,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
+from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -163,7 +165,9 @@ def logout(request):
 
 def list(request):
     # 验证是否登录
-    return  HttpResponse('请先登录')
+    chrs = string.ascii_letters
+    char = random.choice(chrs)
+    return HttpResponse('用户列表页面: <br> %s' % char)
 
 
 def new_code(request):

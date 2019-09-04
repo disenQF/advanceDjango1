@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'middleware.check_login.CheckLoginMiddleware',
+    'middleware.cache_page.CachePageMiddleware',
 ]
 
 ROOT_URLCONF = 'advanceDjango.urls'
@@ -170,5 +171,9 @@ CACHES = {
             'MAX_ENTRIES': 500,
             'CULL_FREQUENCY': 3
         }
+    },
+    'html': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
     }
 }
