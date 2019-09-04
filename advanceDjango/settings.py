@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',
     'stockapp',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -199,3 +200,4 @@ SESSION_COOKIE_AGE = 1209600   # 2周有效时间
 
 # 配置Celery
 CELERY_IMPORTS = ('stockapp.tasks', )
+CELERY_RESULT_BACKEND = 'django-db'
